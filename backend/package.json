@@ -1,5 +1,6 @@
 {
   "name": "backend",
+  "type": "module",
   "version": "2.4.22",
   "description": "",
   "main": "index.js",
