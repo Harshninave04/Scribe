@@ -1,8 +1,18 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
+import 'dotenv/config.js';
 // app.use(express.json());
 const router = express.Router();
+
+/*****************************Creating JSON WEB TOKEN [JWT]*****************************/
+
+const createToken = (_id) => {
+  return jwt.sign({ _id }, process.env.JWT_SECRET, {
+    expiresIn: '10d', // expires in 24 hours
+  });
+};
 
 /*****************************Register user route*****************************/
 router.post('/', async function (req, res) {
@@ -29,9 +39,13 @@ router.post('/', async function (req, res) {
 
   try {
     const user = await User.create({ email, password: hashedPassword });
+    // Create JSON web token
+    const token = createToken(user._id);
+    // Send the response
     res.status(200).json({
       message: 'User Created!',
-      User,
+      user,
+      token,
     });
   } catch (error) {
     res.status(500).json({
@@ -68,7 +82,10 @@ router.post('/login', async function (req, res) {
   }
 
   try {
-    res.status(200).json({ email });
+    // Create JSON web token
+    const token = createToken(user._id);
+
+    res.status(200).json({ email, token });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
