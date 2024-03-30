@@ -41,12 +41,36 @@ router.post('/', async function (req, res) {
 });
 
 /*****************************Login user route*****************************/
-router.post('/login', function (req, res) {
+router.post('/login', async function (req, res) {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({
       error: 'Email and password are required for login',
     });
+  }
+
+  // Check if the email is already exists
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({
+      error: 'Incorrect email',
+    });
+  }
+
+  // Check if the password is correct
+
+  const match = await bcrypt.compare(password, user.password);
+  if (!match) {
+    return res.status(400).json({
+      error: 'Incorrect password',
+    });
+  }
+
+  try {
+    res.status(200).json({ email });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 export { router as userRoutes };
