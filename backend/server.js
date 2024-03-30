@@ -1,10 +1,12 @@
 import express from 'express';
 import { postRoutes } from './routes/postRoutes.js';
+import { userRoutes } from './routes/userRoutes.js';
 import mongoose from 'mongoose';
 
 const app = express();
 app.use(express.json());
 app.use('/posts', postRoutes);
+app.use('/users', userRoutes);
 
 app.get('/', (req, res) => {
   res.status(404).send('Welcome to App');
