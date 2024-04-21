@@ -1,6 +1,8 @@
 import express from 'express';
 import Post from '../models/postModel.js';
 import mongoose from 'mongoose';
+import auth from '../middleware/auth.js';
+import User from '../models/userModel.js';
 
 const router = express.Router();
 
@@ -16,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 /*****************************Create New Post*****************************/
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   // Grab the data from request body
   const { title, body } = req.body;
 
@@ -27,8 +29,11 @@ router.post('/', async (req, res) => {
     });
   }
 
+  // Grab the user from authenticated body
+  const user = await User.findById(req.user._id);
+
   try {
-    const post = await Post.create({ title, body });
+    const post = await Post.create({ user: user._id, title, body });
     res.status(400).json({
       message: 'Post Created!',
       post,
@@ -42,7 +47,7 @@ router.post('/', async (req, res) => {
 
 /*****************************Delete Post*****************************/
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   // Check the ID is valid type
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return res.status(400).json({
@@ -56,6 +61,12 @@ router.delete('/:id', async (req, res) => {
     return res.status(404).json({
       error: 'Post not found',
     });
+  }
+
+  // Check the user owns the post
+  const user = await User.findById(req.user._id);
+  if (!post.user.equals(user._id)) {
+    return res.status(401).json({ error: 'Not Authorized' });
   }
 
   try {
@@ -71,7 +82,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 /*****************************Update Post*****************************/
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   // Grab the data from request body
   const { title, body } = req.body;
 
@@ -95,6 +106,12 @@ router.put('/:id', async (req, res) => {
     return res.status(404).json({
       error: 'Post not found',
     });
+  }
+
+  // Check the user owns the post
+  const user = await User.findById(req.user._id);
+  if (!post.user.equals(user._id)) {
+    return res.status(401).json({ error: 'Not Authorized' });
   }
 
   try {
