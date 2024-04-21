@@ -17,6 +17,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+/*****************************Get Users Post*****************************/
+router.get('/user', auth, async (req, res) => {
+  // grab the authenticated user from the body
+  const user = await User.findById(req.user._id);
+  try {
+    const userPosts = await Post.find({user: user._id});
+    res.status(200).json({userPosts});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 /*****************************Create New Post*****************************/
 router.post('/', auth, async (req, res) => {
   // Grab the data from request body
