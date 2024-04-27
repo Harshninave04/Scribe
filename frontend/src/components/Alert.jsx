@@ -3,7 +3,7 @@ const Alert = ({ msg }) => {
   return (
     <div className="bg-red-500 text-white p-2 rounded-md mt-4">
       <i className="fa-solid fa-triangle-exclamation"></i>
-      {msg}
+      {' ' + msg}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Alert from '../../components/Alert';
+import { loginUser } from '../../controller/usersController';
 
 const Login = () => {
   // Error State
@@ -12,12 +13,17 @@ const Login = () => {
 
   // HandleLogin
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
-    setEmail('');
-    setPassword('');
+
+    try {
+      await loginUser(email, password);
+    } catch (error) {
+      setError(error.message);
+    }
+
+    // setEmail('');
+    // setPassword('');
   };
   return (
     <section className="card">
