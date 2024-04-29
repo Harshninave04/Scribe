@@ -1,8 +1,16 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Alert from '../../components/Alert';
 import { loginUser } from '../../controller/usersController';
+import { UserContext } from '../../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  // Use user context
+  const { setUser } = useContext(UserContext);
+
+  // Use navigate hook
+  const navigate = useNavigate();
+
   // Error State
   // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
@@ -17,7 +25,12 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      // login the user
       await loginUser(email, password);
+      // Update the user state
+      setUser({ email, posts: [] });
+      // Navigate to the dashboard
+      navigate('/dashboard');
     } catch (error) {
       setError(error.message);
     }

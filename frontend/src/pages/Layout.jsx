@@ -5,10 +5,13 @@ function Layout() {
     <>
       <header className="bg-blue-500 text-white p-4">
         <nav className="flex items-center justify-between">
-          <Link to="/" className="fa-solid fa-house-chimney nav-link"></Link>
+          <Link title="Home" to="/" className="fa-solid fa-house-chimney nav-link"></Link>
           <div className="flex items-center gap-2">
-            <Link to="/login" className="fa-solid fa-arrow-right-to-bracket nav-link"></Link>
-            <Link to="/register" className="fa-solid fa-user-plus nav-link"></Link>
+            <Link
+              title="Login"
+              to="/login"
+              className="fa-solid fa-arrow-right-to-bracket nav-link"></Link>
+            <Link title="Register" to="/register" className="fa-solid fa-user-plus nav-link"></Link>
           </div>
         </nav>
       </header>
