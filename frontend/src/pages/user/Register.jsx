@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Alert from '../../components/Alert';
+import { registerUser } from '../../controller/usersController';
 
 const Register = () => {
   // Error State
@@ -14,9 +15,14 @@ const Register = () => {
   });
 
   // Handle Register
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    try {
+      await registerUser(formData.email, formData.password, formData.confirmPassword);
+    } catch (error) {
+      setError(error.message);
+    }
   };
   return (
     <section className="card">
