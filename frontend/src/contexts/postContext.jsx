@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 import { createContext, useState } from 'react';
 
 export const PostContext = createContext();
 
-// eslint-disable-next-line react/prop-types
 const PostProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
 

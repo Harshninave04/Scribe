@@ -1,6 +1,15 @@
 /* eslint-disable react/prop-types */
-function Post({ post }) {
-  return <div>{post.title}</div>;
-}
+const Post = ({ post }) => {
+  return (
+    <div>
+      <div>
+        <div>
+          <h2>{post.title}</h2>
+          <p>{post.createdAt}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Post;
