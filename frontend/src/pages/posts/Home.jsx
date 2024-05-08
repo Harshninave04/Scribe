@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
-import { getPosts } from '../../controller/postsController';
-import { PostContext } from '../../contexts/postContext';
+import { getPosts } from '../../controller/postsController.js';
+import { PostContext } from '../../contexts/PostContext';
 import Post from '../../components/Post';
 
 const Home = () => {
@@ -16,12 +16,12 @@ const Home = () => {
       // Grab all posts
       const data = await getPosts();
       // Update posts state
-      setPosts(data.posts);
+      setPosts(data);
+      // console.log(data);
       // Remove the loading
       setLoading(false);
     }, 1000);
   }, []);
-
   return (
     <section className="card">
       <h1 className="title">Latest posts</h1>

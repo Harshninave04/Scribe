@@ -5,7 +5,7 @@ const loginUser = async (email, password) => {
     throw Error('All fields are required');
   }
 
-  const res = await fetch('/users/login', {
+  const res = await fetch('/api/users/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -35,11 +35,11 @@ const registerUser = async (email, password, confirmPassword) => {
     throw Error('All fields are required');
   }
 
-  if (password!== confirmPassword) {
+  if (password !== confirmPassword) {
     throw Error('Passwords do not match');
   }
 
-  const res = await fetch('/users', {
+  const res = await fetch('/api/users', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ const registerUser = async (email, password, confirmPassword) => {
   localStorage.setItem('email', data.email);
 
   return data;
-}
+};
 
 
 export { loginUser, registerUser };
